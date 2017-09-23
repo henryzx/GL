@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.TextureView
+import android.widget.FrameLayout
+import android.widget.TextView
 import timber.log.Timber
 import zx.gl.GLCircle
 import zx.gl.R
@@ -16,6 +18,7 @@ import kotlin.concurrent.thread
  */
 class VSyncTextureActivity : AppCompatActivity() {
     lateinit var textureView: TextureView
+    lateinit var textView: TextView
     lateinit var renderThread: VSyncRenderThread
 
     lateinit var fpsThread: Thread
@@ -23,9 +26,13 @@ class VSyncTextureActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val frame = FrameLayout(this)
         textureView = TextureView(this)
         textureView.isOpaque = false
-        setContentView(textureView)
+        textView = TextView(this)
+        frame.addView(textView)
+        frame.addView(textureView)
+        setContentView(frame)
 
         val bubbleView = LayoutInflater.from(this).inflate(R.layout.bubble_sample, null, false)
         val bitmap = viewToBitmap(bubbleView)
@@ -39,7 +46,8 @@ class VSyncTextureActivity : AppCompatActivity() {
         fpsThread = thread {
             try {
                 while (!Thread.currentThread().isInterrupted) {
-                    Timber.i("fps: ${renderThread.fps}")
+                    //Timber.i("fps: ${renderThread.fps}")
+                    runOnUiThread { textView.text = "fps ${renderThread.fps}" }
                     Thread.sleep(1000L)
                 }
             } catch (e: Throwable) {
