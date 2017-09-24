@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.TextureView
 import android.widget.FrameLayout
 import android.widget.TextView
-import timber.log.Timber
 import zx.gl.GLCircle
 import zx.gl.R
 import zx.gl.viewToBitmap
@@ -34,9 +33,9 @@ class VSyncTextureActivity : AppCompatActivity() {
         frame.addView(textureView)
         setContentView(frame)
 
-        val bubbleView = LayoutInflater.from(this).inflate(R.layout.bubble_sample, null, false)
+        val bubbleView = LayoutInflater.from(this).inflate(R.layout.bubble_sample, null)
         val bitmap = viewToBitmap(bubbleView)
-        val glCircle = GLCircle(this, PointF(0f, 0f), bitmap, 0.5f) { }
+        val glCircle = GLCircle(this, PointF(0f, 0f), bitmap, 0.5f) {}
         glCircle.start()
 
         renderThread = VSyncRenderThread(glCircle)

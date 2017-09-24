@@ -30,7 +30,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class GLCircle extends ContextWrapper implements GLSurfaceView.Renderer {
 
-  interface Callback{
+  public interface Callback{
     void requestRender();
   }
 
